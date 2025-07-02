@@ -9,6 +9,7 @@ function SignUp() {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
   const [formErrors, setFormErrors] = useState({ username: '', email: '', password: '' });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -47,11 +48,13 @@ function SignUp() {
 
     if (Object.values(errors).every((err) => err === '')) {
       try {
-        const userData = await signup(formData);
-        login(userData);
-        navigate('/dashboard');
+        await signup(formData);
+        setSuccess('Account created successfully! Please sign in.');
+        setError('');
+        setTimeout(() => navigate('/SignIn'), 2000); // Redirect after 2 seconds
       } catch (err) {
         setError(err.message);
+        setSuccess('');
       }
     }
   };
@@ -66,6 +69,7 @@ function SignUp() {
           Sign Up
         </Typography>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+        {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <TextField
             label="Username"
