@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Typography, TextField, Button, Box, Paper, Alert } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
-import { login as backendLogin } from '../utils/backend';
+import { login as backendLogin } from '../utils/Backend';
 import GoogleAuthButton from '../components/GoogleAuthButton';
 
 function SignIn() {

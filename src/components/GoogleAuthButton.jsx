@@ -2,7 +2,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import { googleLogin } from '../utils/backend';
+import { googleLogin } from '../utils/Backend';
 
 function GoogleAuthButton({ setError }) {
   const { login } = useAuth();
