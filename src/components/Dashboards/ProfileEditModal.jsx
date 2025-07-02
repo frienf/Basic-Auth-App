@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Alert } from '@mui/material';
-import { useFormValidation } from '../../hooks/useFormValidation';
+import { useFormValidation } from '../useFormValidation';
 
 function ProfileEditModal({ open, onClose, user, onSave }) {
   const { formData, formErrors, handleChange, validateForm, isFormValid } = useFormValidation({
