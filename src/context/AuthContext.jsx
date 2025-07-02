@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { updateUser as updateUserInBackend } from '../utils/Backend';
 
 const AuthContext = createContext(null);
 
@@ -13,7 +14,7 @@ export function AuthProvider({ children }) {
       }
     } catch (err) {
       console.error('Failed to parse stored user:', err);
-      localStorage.removeItem('currentUser'); // Clear invalid data
+      localStorage.removeItem('currentUser');
     }
   }, []);
 
@@ -27,8 +28,15 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('currentUser');
   };
 
+  const updateUser = async (updatedData) => {
+    const updatedUser = await updateUserInBackend(updatedData);
+    setUser(updatedUser);
+    localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+    return updatedUser;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -10,7 +10,7 @@ export function signup(userData) {
   const newUser = { ...userData, password: hashedPassword };
   users.push(newUser);
   localStorage.setItem('users', JSON.stringify(users));
-  return { ...newUser, password: undefined }; // Don't return the hashed password
+  return { ...newUser, password: undefined };
 }
 
 export function login(email, password) {
@@ -19,7 +19,7 @@ export function login(email, password) {
   if (!user || !bcrypt.compareSync(password, user.password)) {
     throw new Error('Invalid credentials');
   }
-  return { ...user, password: undefined }; // Don't return the hashed password
+  return { ...user, password: undefined };
 }
 
 export function googleLogin(userData) {
@@ -31,4 +31,16 @@ export function googleLogin(userData) {
     localStorage.setItem('users', JSON.stringify(users));
   }
   return user;
+}
+
+export function updateUser(updatedData) {
+  const users = JSON.parse(localStorage.getItem('users') || '[]');
+  const userIndex = users.findIndex((u) => u.email === updatedData.email);
+  if (userIndex === -1) {
+    throw new Error('User not found');
+  }
+  const updatedUser = { ...users[userIndex], ...updatedData };
+  users[userIndex] = updatedUser;
+  localStorage.setItem('users', JSON.stringify(users));
+  return { ...updatedUser, password: undefined };
 }
