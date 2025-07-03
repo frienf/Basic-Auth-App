@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Typography, TextField, Button, Box, Paper, Alert } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
-import { login as backendLogin } from '../utils/Backend';
+import { login, userExists } from '../utils/Backend'; // Import userExists
 import GoogleAuthButton from '../components/GoogleAuthButton';
 
 function SignIn() {
@@ -10,7 +10,7 @@ function SignIn() {
   const [formErrors, setFormErrors] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login: authLogin } = useAuth();
 
   const validateField = (name, value) => {
     switch (name) {
@@ -43,8 +43,15 @@ function SignIn() {
 
     if (Object.values(errors).every((err) => err === '')) {
       try {
-        const userData = await backendLogin(formData.email, formData.password);
-        login(userData);
+        // Check if user exists
+        if (!userExists(formData.email)) {
+          setError('User not found. Redirecting to Sign Up...');
+          setTimeout(() => navigate('/SignUp'), 2000); // Redirect after 2 seconds
+          return;
+        }
+        // Proceed with login if user exists
+        const userData = await login(formData.email, formData.password);
+        authLogin(userData);
         navigate('/dashboard');
       } catch (err) {
         setError(err.message);

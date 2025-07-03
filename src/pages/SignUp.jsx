@@ -51,7 +51,7 @@ function SignUp() {
         await signup(formData);
         setSuccess('Account created successfully! Please sign in.');
         setError('');
-        setTimeout(() => navigate('/SignIn'), 2000); // Redirect after 2 seconds
+        setTimeout(() => navigate('/SignIn'), 2000); 
       } catch (err) {
         setError(err.message);
         setSuccess('');

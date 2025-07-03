@@ -1,3 +1,4 @@
+// src/utils/Backend.jsx
 import bcrypt from 'bcryptjs';
 
 export function signup(userData) {
@@ -43,4 +44,10 @@ export function updateUser(updatedData) {
   users[userIndex] = updatedUser;
   localStorage.setItem('users', JSON.stringify(users));
   return { ...updatedUser, password: undefined };
+}
+
+
+export function userExists(email) {
+  const users = JSON.parse(localStorage.getItem('users') || '[]');
+  return users.some((u) => u.email === email);
 }
